@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommenda</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <section class="hero">
+        <div class="video-overlay"></div>
+        <video autoplay muted loop id="heroVideo">
+            <source src="hero-bg.mp4" type="video/mp4">
+        </video>
+        <div class="hero-content">
+            <h1>Discover Your Next Favorite Movie with <span>Recommenda</span></h1>
+            <p>Personalized recommendations powered by AI and collaborative filtering</p>
+            <button class="explore-btn" onclick="scrollToMain()">
+                <span>Start Exploring</span>
+                <i class="fas fa-chevron-down"></i>
+            </button>
+        </div>
+    </section>
+
+    <main id="mainContent">
+        <div class="container">
+            <div class="recommendation-section glass-card">
+                <div class="card-content">
+                    <div class="input-group">
+                        <div class="user-input">
+                            <label for="userId">User ID</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-user"></i>
+                                <input type="number" id="userId" min="1" placeholder="Enter your user ID">
+                            </div>
+                        </div>
+
+                        <div class="genre-select">
+                            <label for="genre">Movie Genre Preference</label>
+                            <div class="select-wrapper">
+                                <i class="fas fa-film"></i>
+                                <select id="genre">
+                                    <option value="">Select Genre</option>
+                                    <option value="action">Action & Adventure</option>
+                                    <option value="comedy">Comedy</option>
+                                    <option value="drama">Drama</option>
+                                    <option value="romance">Romance</option>
+                                    <option value="thriller">Thriller</option>
+                                    <option value="scifi">Sci-Fi & Fantasy</option>
+                                    <option value="horror">Horror</option>
+                                </select>
+                                <i class="fas fa-chevron-down arrow"></i>
+                            </div>
+                        </div>
+
+                        <div class="method-select">
+                            <label for="method">Recommendation Method</label>
+                            <div class="select-wrapper">
+                                <i class="fas fa-magic"></i>
+                                <select id="method">
+                                    <option value="hybrid">Hybrid (KNN + SVD)</option>
+                                    <option value="knn">K-Nearest Neighbors</option>
+                                    <option value="svd">Singular Value Decomposition</option>
+                                </select>
+                                <i class="fas fa-chevron-down arrow"></i>
+                            </div>
+                        </div>
+
+                        <div class="count-select">
+                            <label for="count">Number of Recommendations</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-hashtag"></i>
+                                <input type="number" id="count" min="1" max="20" value="10">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="getRecommendations" class="gradient-btn">
+                        <i class="fas fa-search"></i>
+                        <span>Get Recommendations</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="status-section">
+                <div id="statusIndicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Checking system status...</span>
+                </div>
+            </div>
+
+            <div class="results-section glass-card">
+                <h2><i class="fas fa-film"></i> Recommended Movies</h2>
+                <div id="recommendations" class="recommendations-grid">
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>Recommenda, A Practicum Project by Laksh Nijhawan</p>
+            <div class="social-links">
+                <a href="https://github.com/laksh2005" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/laksh-nijhawan-576888280/" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
