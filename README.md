@@ -1,4 +1,4 @@
-# CineSuggest - Movie Recommendation System
+# Reccomenda - Movie Recommendation System
 
 A movie recommendation system using collaborative filtering techniques (KNN and SVD) built with the MovieLens dataset.
 
