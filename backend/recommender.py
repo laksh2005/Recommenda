@@ -86,7 +86,7 @@ class MovieRecommender:
             recommendations = self._get_knn_recommendations(user_ratings_scaled, n)
         elif method == 'svd':
             recommendations = self._get_svd_recommendations(user_ratings_scaled, n)
-        else:  # hybrid
+        else: 
             knn_recs = self._get_knn_recommendations(user_ratings_scaled, n)
             svd_recs = self._get_svd_recommendations(user_ratings_scaled, n)
             recommendations = self._combine_recommendations(knn_recs, svd_recs, n)
