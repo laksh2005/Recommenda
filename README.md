@@ -14,7 +14,7 @@ A movie recommendation system using collaborative filtering techniques (KNN and 
    ```
    pip install -r requirements.txt
    ```
-3. Download the MovieLens dataset and place it in `backend/data/`
+3. Download the dataset and place it in `backend/data/`
 4. Run the Flask backend:
    ```
    cd backend
@@ -29,7 +29,7 @@ cinesuggest/
 │   ├── app.py           # Flask application
 │   ├── recommender.py   # Recommendation logic
 │   ├── model/          # Serialized models
-│   └── data/           # MovieLens dataset
+│   └── data/           #  dataset
 ├── frontend/
 │   ├── index.html      # Web interface
 │   ├── style.css       # Styling
