@@ -1,48 +1,53 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from recommender import MovieRecommender
 import os
 
-app = Flask(__name__)
+# Define paths
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, 'data')
+
+app = Flask(__name__, static_folder="../frontend", static_url_path="")
 CORS(app)
 
 # Initialize recommender
 recommender = MovieRecommender()
 
+@app.route('/')
+def serve_index():
+    """Serve the frontend index.html file."""
+    return send_from_directory(app.static_folder, 'index.html')
+
+
 @app.route('/api/status', methods=['GET'])
 def get_status():
     """Check if models are loaded and ready."""
     try:
-        # Check if data files exist
-        movies_exist = os.path.exists('data/movies.csv')
-        ratings_exist = os.path.exists('data/ratings.csv')
-        
+        movies_exist = os.path.exists(os.path.join(DATA_DIR, 'movies.csv'))
+        ratings_exist = os.path.exists(os.path.join(DATA_DIR, 'ratings.csv'))
+
         if not movies_exist or not ratings_exist:
             return jsonify({
                 'status': 'not_ready',
                 'error': 'Movie data files not found in data directory'
             }), 400
 
-        # Try to load data if not already loaded
         if recommender.movies_df is None:
             recommender.load_data()
-        
-        # Try to load models, train if not available
+
         models_loaded = recommender.load_models()
         if not models_loaded:
             recommender.train_models()
             models_loaded = recommender.load_models()
-        
+
         return jsonify({
             'status': 'ready',
             'models_loaded': models_loaded,
             'data_loaded': True
         })
     except Exception as e:
-        return jsonify({
-            'status': 'error',
-            'error': str(e)
-        }), 500
+        return jsonify({'status': 'error', 'error': str(e)}), 500
+
 
 @app.route('/api/movies', methods=['GET'])
 def get_movies():
@@ -54,6 +59,7 @@ def get_movies():
         return jsonify({'movies': movies})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 @app.route('/api/recommendations', methods=['POST'])
 def get_recommendations():
@@ -70,19 +76,16 @@ def get_recommendations():
         if not user_id:
             return jsonify({'error': 'userId is required'}), 400
 
-        # Ensure data is loaded
         if recommender.movies_df is None:
             recommender.load_data()
 
-        # Get recommendations
         recommendations = []
         movie_scores = recommender.get_recommendations(
             user_id=int(user_id),
             n=int(n),
             method=method
         )
-        
-        # Format recommendations
+
         for movie_id, score in movie_scores.items():
             movie_info = recommender.movies_df[recommender.movies_df['movieId'] == movie_id].iloc[0]
             recommendations.append({
@@ -97,11 +100,8 @@ def get_recommendations():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
 if __name__ == '__main__':
-    # Set the working directory to the backend folder
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
-    
-    # Try to load existing models and data
     try:
         recommender.load_data()
         if not recommender.load_models():
@@ -111,4 +111,5 @@ if __name__ == '__main__':
         print(f"Warning: {str(e)}")
         print("Please ensure MovieLens dataset (movies.csv and ratings.csv) is in the data directory.")
     
-    app.run(debug=True, port=5000) 
+    # Only run in debug mode for local dev
+    app.run(debug=True, port=5000)
